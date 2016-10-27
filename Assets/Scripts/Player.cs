@@ -9,11 +9,12 @@ public class Player : Movement {
     public int torches = 5;
     public float sanity = 1000f;
     public GameObject torchPrefab;
-
+    public float timeSinceLastSpawn = 0;
 
 	// Use this for initialization
 	void Start () {
         rigid = GetComponent<Rigidbody2D>();
+
         S = this;
 	}
 	
@@ -83,12 +84,7 @@ public class Player : Movement {
 
         float santityTemp = sanityChange(transform.position);
         sanity += santityTemp;
-        if (NotInTheLight())
-        {
-            Main.S.SpawnGhosty(sanity);
-        }
-        
-
+        Main.S.SpawnGhosty(Time.time);
     }
 
     bool NotInTheLight()

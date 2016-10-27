@@ -16,8 +16,10 @@ public class Ghosty : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+
         Vector2 playerPos = Player.S.transform.position;
         Vector2 myPos = transform.position;
+
         if(Player.S.sanity < sanityIncreaseFirst)
         {
             movementSpeed = startingSpeed * 1.5f;
@@ -42,10 +44,9 @@ public class Ghosty : MonoBehaviour {
         {
             myPos.y += movementSpeed * Time.fixedDeltaTime;
         }
-        if (!isPositionInLight(myPos))
-        {
-            transform.position = myPos;
-        }
+
+        transform.position = myPos;
+
         if (isPositionInLight(transform.position)){
             Destroy(this.gameObject);
         }

@@ -4,43 +4,47 @@ using System.Collections;
 public class Main : MonoBehaviour {
     public static Main S;
     public GameObject ghostyPrefab;
-    public float firstSpawnLevel;
-    public float secondSpawnLevel;
-    public float thirdSpawnLevel;
+    public float firstSpawnLevel, firstTimer;
+    public float secondSpawnLevel, secondTimer;
+    public float thirdSpawnLevel, thirdTimer;
+    public float timeSinceLastSpawn = 0;
 
 	// Use this for initialization
 	void Start () {
         S = this;
+        timeSinceLastSpawn = 0;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+	    
 	}
 
-    public void SpawnGhosty(float sanity)
+    public void SpawnGhosty(float time)
     {
-        float randomVal = Random.Range(0, 100);
-        if(sanity < thirdSpawnLevel)
+        if(Player.S.sanity < thirdSpawnLevel)
         {
-            if (randomVal <= 5)
+            if ((Time.time - timeSinceLastSpawn) >= thirdTimer)
             {
+                timeSinceLastSpawn = Time.time;
                 GameObject ghost = Instantiate(ghostyPrefab);
                 ghost.transform.position = findPositionOnMap();
             }
         }
-        else if(sanity < secondSpawnLevel)
+        else if(Player.S.sanity < secondSpawnLevel)
         {
-            if(randomVal <= 2)
+            if((Time.time - timeSinceLastSpawn) >= secondTimer)
             {
+                timeSinceLastSpawn = Time.time;
                 GameObject ghost = Instantiate(ghostyPrefab);
                 ghost.transform.position = findPositionOnMap();
             }
         }
-        else if(sanity < thirdSpawnLevel)
+        else if(Player.S.sanity < firstSpawnLevel)
         {
-            if(randomVal <= 0.5)
+            if((Time.time - timeSinceLastSpawn) >= firstTimer)
             {
+                timeSinceLastSpawn = Time.time;
                 GameObject ghost = Instantiate(ghostyPrefab);
                 ghost.transform.position = findPositionOnMap();
             }
