@@ -1,18 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class Torch : MonoBehaviour
 {
 
-    public static Torch S;
-
     public int radius;
     public int outskirtSize;
     public bool inGame;
+    public int numKill = 10;
 
     public void Awake()
     {
-        S = this;
+       
     }
 
     void Start()
@@ -42,16 +42,16 @@ public class Torch : MonoBehaviour
         for(int xVal = -radius - outskirtSize; xVal <= radius + outskirtSize; xVal++)
         {
             int currentX = (int)transform.position.x + xVal;
-            if (currentX < 0 || currentX > MapCreator.S.xSize)
+            if (currentX < 0 || currentX >= MapCreator.S.xSize)
                 continue; //Out of bounds
             for(int yVal = - radius; yVal <= radius; yVal++)
             {
                 int currentY = (int)transform.position.y + yVal;
-                if (currentY < 0 || currentY > MapCreator.S.ySize)
+                if (currentY < 0 || currentY >= MapCreator.S.ySize)
                     continue;
-                if (xVal > radius && yVal > radius)
+                if (Math.Abs(xVal) > radius && Math.Abs(yVal) > radius)
                     continue;
-                else if (xVal > radius || yVal > radius)
+                else if (Math.Abs(xVal) > radius || Math.Abs(yVal) > radius)
                 {
                     if (MapCreator.S.map[currentX, currentY].lightAmount != TileLight.lit)
                     {

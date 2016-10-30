@@ -47,7 +47,7 @@ public class Ghosty : MonoBehaviour {
 
         transform.position = myPos;
 
-        if (isPositionInLight(transform.position)){
+        if (isPositionInLight(transform.position) && Vector2.Distance(playerPos, myPos) < 5f){
             Destroy(this.gameObject);
         }
 	}

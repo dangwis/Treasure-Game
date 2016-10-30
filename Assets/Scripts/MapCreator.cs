@@ -9,6 +9,7 @@ public struct TileSprites
     public char identifier;
     public TileType type;
     public GameObject prefab;
+    public GameObject item;
     public TileLight lightAmount;
 }
 
@@ -49,6 +50,10 @@ public class MapCreator : MonoBehaviour
                 {
                     map[x, y] = tileSprites[i];
                     map[x, y].prefab = (GameObject)Instantiate(tileSprites[i].prefab, new Vector3(x, y, 0), Quaternion.identity);
+                    if(tileSprites[i].item != null)
+                    {
+                        map[x, y].item = (GameObject)Instantiate(tileSprites[i].item, new Vector3(x, y, 0), Quaternion.identity);
+                    }
                     break;
                 }
             }

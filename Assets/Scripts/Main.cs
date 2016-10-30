@@ -55,13 +55,18 @@ public class Main : MonoBehaviour {
     {
         bool flag = false;
         int xPos = 0, yPos = 0;
+        Vector2 ghostPos;
         while (!flag)
         {
             xPos = Mathf.RoundToInt(Random.Range(0, MapCreator.S.xSize));
             yPos = Mathf.RoundToInt(Random.Range(0, MapCreator.S.ySize));
-            if(MapCreator.S.map[xPos, yPos].lightAmount != TileLight.lit || MapCreator.S.map[xPos, yPos].lightAmount != TileLight.dim)
+            ghostPos = new Vector2(xPos, yPos);
+            if (Vector2.Distance(Player.S.transform.position, ghostPos) > 3.5f)
             {
-                flag = true;
+                if (MapCreator.S.map[xPos, yPos].lightAmount != TileLight.lit || MapCreator.S.map[xPos, yPos].lightAmount != TileLight.dim)
+                {
+                    flag = true;
+                }
             }
         }
         return new Vector2(xPos, yPos);
