@@ -22,7 +22,7 @@ public class MapCreator : MonoBehaviour
 
     public TileSprites[,] map;
     
-    public void Start()
+    public void Awake()
     {
         S = this;
         map = new TileSprites[xSize, ySize];

@@ -8,10 +8,16 @@ public class Ghosty : MonoBehaviour {
     public float sanityIncreaseFirst;
     public float sanityIncreaseSecond;
     public float sanityDecreaseOnHit;
+    public GameObject firePrefab;
+    public GameObject sanityPrefab;
+    public Sprite[] ghostySprites;
+
+    SpriteRenderer spRend;
     
 	// Use this for initialization
 	void Start () {
         movementSpeed = startingSpeed;
+        spRend = transform.Find("Sprite").GetComponent<SpriteRenderer>();
 	}
 	
 	// Update is called once per frame
@@ -19,6 +25,7 @@ public class Ghosty : MonoBehaviour {
 
         Vector2 playerPos = Player.S.transform.position;
         Vector2 myPos = transform.position;
+        bool left, right, up;
 
         if(Player.S.sanity < sanityIncreaseFirst)
         {
@@ -28,26 +35,56 @@ public class Ghosty : MonoBehaviour {
         {
             movementSpeed = startingSpeed * 2.5f;
         }
-	    if(playerPos.x < myPos.x)
+        left = false;
+        right = false;
+        up = false;
+        if (Mathf.Abs(playerPos.x - myPos.x) > 0.05f)
         {
-            myPos.x -= movementSpeed * Time.fixedDeltaTime;
+            if (playerPos.x < myPos.x)
+            {
+                left = true;
+                myPos.x -= movementSpeed * Time.fixedDeltaTime;
+            }
+            else if (playerPos.x > myPos.x)
+            {
+                right = true;
+                myPos.x += movementSpeed * Time.fixedDeltaTime;
+            }
         }
-        else if(playerPos.x > myPos.x)
+        if (Mathf.Abs(playerPos.y - myPos.y) > 0.05f)
         {
-            myPos.x += movementSpeed * Time.fixedDeltaTime;
+            if (playerPos.y < myPos.y)
+            {
+                myPos.y -= movementSpeed * Time.fixedDeltaTime;
+            }
+            else if (playerPos.y > myPos.y)
+            {
+                myPos.y += movementSpeed * Time.fixedDeltaTime;
+                up = true;
+            }
         }
-        if(playerPos.y < myPos.y)
+        if (up)
         {
-            myPos.y -= movementSpeed * Time.fixedDeltaTime;
+            spRend.sprite = ghostySprites[2];
         }
-        else if(playerPos.y > myPos.y)
+        else if (right)
         {
-            myPos.y += movementSpeed * Time.fixedDeltaTime;
+            spRend.sprite = ghostySprites[3];
         }
-
+        else if (left)
+        {
+            spRend.sprite = ghostySprites[1];
+        }
+        else
+        {
+            spRend.sprite = ghostySprites[0];
+        }
         transform.position = myPos;
 
         if (isPositionInLight(transform.position) && Vector2.Distance(playerPos, myPos) < 5f){
+            GameObject fire = Instantiate(firePrefab);
+            fire.transform.position = this.transform.position;
+            Main.S.ghostburn.Play();
             Destroy(this.gameObject);
         }
 	}
@@ -65,6 +102,8 @@ public class Ghosty : MonoBehaviour {
         GameObject go = coll.gameObject;
         if(go.tag == "Player")
         {
+            GameObject san = Instantiate(sanityPrefab);
+            san.transform.position = Player.S.transform.position;
             Player.S.sanity -= sanityDecreaseOnHit;
             Destroy(this.gameObject);
         }
