@@ -132,8 +132,6 @@ public class Player : Movement {
             if (Time.time - staminaReleaseTime >= staminaRegenTimer && stamina <= 100)
             {
                 stamina += 0.5f;
-                //Sometimes I wonder if it's even worth catching my breath. Death looms over us all and it calls to me like a siren call beckoning me to come home
-                // Also this restores stamina of the character. 
             }
 
             if (Input.GetKey(KeyCode.UpArrow))
@@ -191,21 +189,33 @@ public class Player : Movement {
 
             float santityTemp = sanityChange(transform.position);
             sanity += santityTemp;
-            if (sanity <= 600)
+            if (sanity <= 300)
+            {
+                if (Main.S.main.isPlaying)
+                {
+                    Main.S.main.Stop();
+                }
+                if (!Main.S.intense.isPlaying)
+                {
+                    Main.S.intense.Play();
+                }
+                Main.S.heartbeat.volume = 1.0f;
+                Main.S.scream.volume = 0.2f;
+            }
+            else if (sanity <= 600)
             {
                 if (!Main.S.heartbeat.isPlaying)
                 {
                     Main.S.heartbeat.Play();
-                    Main.S.main.volume = 0.35f;
+                    if (!Main.S.intense.isPlaying)
+                    {
+                        Main.S.main.volume = 0.35f;
+                    }
                     Main.S.heartbeat.loop = true;
+                    Main.S.scream.volume = 0.15f;
                 }
             }
-            if(sanity <= 300)
-            {
-                Main.S.main.Stop();
-                Main.S.intense.Play();
-                Main.S.heartbeat.volume = 1.0f;
-            }
+            
             else
             {
                 Main.S.heartbeat.Stop();

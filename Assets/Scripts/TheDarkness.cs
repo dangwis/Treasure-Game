@@ -9,15 +9,12 @@ public class TheDarkness : MonoBehaviour {
     public float time = 30f;
     float timeLeft;
     Color goTo;
-    Color original;
-    bool flashRed;
 
     // Use this for initialization
     void Start () {
         S = this;
         darkness = transform.Find("Darkness").GetComponent<Image>();
-        original = darkness.color;
-        flashRed = false;
+      
 	}
 	
 	public void SetDarkness(TileLight light)
@@ -37,7 +34,6 @@ public class TheDarkness : MonoBehaviour {
             goTo = darkness.color;
             goTo.a = 0;
         }
-        original = goTo;
     }
 
     void Update()
